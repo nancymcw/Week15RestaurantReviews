@@ -1,25 +1,12 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import RestaurantList from "./Components/RestaurantList";
 
-function App() {
+//ended up putting everything in RestaurantList so that is all that is being called within the app
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container flex">
+      <RestaurantList />
     </div>
   );
 }
-
-export default App;
