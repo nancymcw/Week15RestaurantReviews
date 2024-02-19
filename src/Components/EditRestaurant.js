@@ -1,12 +1,11 @@
 import { useState } from "react";
-import Button from "react-bootstrap/Button";
+import { Button, Form } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import { restaurantAPI } from "../REST/RestaurantsAPI";
 
 function EditRestaurant(props) {
   const [show, setShow] = useState(false);
 
-  //Loved getting practice with a Modal again, for popping up an EDIT/PUT form. Here is to handle opening and closing by setting it to true or false.
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -19,23 +18,39 @@ function EditRestaurant(props) {
   const [updatedRestaurantImage, setUpdatedRestaurantImage] = useState(
     props.img
   );
-  // I only take out/destructure the functions I need from restaurantAPI.
+  const [updatedRestaurantDate, setUpdatedRestaurantDate] = useState(
+    props.dateVisited
+  );
   const { get, put } = restaurantAPI;
 
   const handleUpdateSubmit = (e) => {
     e.preventDefault();
-    // Creating variable with identicle data to then put into PUT function below.
     const updatedRestaurant = {
       id: props.id,
       restaurantName: updatedRestaurantName,
       cuisine: updatedRestaurantCuisine,
       img: updatedRestaurantImage,
+      dateVisited: updatedRestaurantDate,
     };
+
+    //took this from restaurantList for when submit button is pressed on Edit.
+    // Need something like this for my edit button. had to log out props.onUpdateSuccess below.
+    //also still being wonky with re-rendering since the meeting with Matt, have to manually refresh after edits and whatnot whichis a BUMMER
+    // const updateRestaurantList = () => {
+    //   restaurantAPI
+    //     .get()
+    //     .then((data) => {
+    //       setRestaurants(data);
+    //     })
+    //     .catch((error) => {
+    //       console.error("Error fetching updated restaurant list:", error);
+    //     });
+    // };
 
     put(updatedRestaurant)
       .then((data) => {
         console.log(data); // log the response data
-        props.onUpdateSuccess();
+        // props.onUpdateSuccess();
         handleClose(); // close the modal after successful update
       })
       .catch((error) => {
@@ -52,7 +67,7 @@ function EditRestaurant(props) {
       <Modal
         show={show}
         onHide={handleClose}
-        backdrop="static" //wanted a form that doesn't close when you click anotehr part of the page so I chose static.
+        backdrop="static"
         keyboard={false}
       >
         <Modal.Header closeButton>
@@ -62,28 +77,44 @@ function EditRestaurant(props) {
           <form id="edit-modal">
             <h3>Update This Restaurant:</h3>
             <br />
-            <label>Restaurant Name</label>
-            <input
-              placeholder={props.restaurantName}
-              value={updatedRestaurantName}
-              onChange={(e) => setUpdatedRestaurantName(e.target.value)}
-            ></input>
-            <br />
-            <label>Cuisine</label>
-            <input
-              placeholder={props.cuisine}
-              value={updatedRestaurantCuisine}
-              onChange={(e) => setUpdatedRestaurantCuisine(e.target.value)}
-            ></input>
-            <br />
-            <label>Image</label>
-            <input
-              placeholder={props.img}
-              value={updatedRestaurantImage}
-              onChange={(e) => setUpdatedRestaurantImage(e.target.value)}
-            ></input>
-            <br />
-            <br />
+
+            <Form>
+              <Form.Group className="mb-3" controlId="formUpdateRestaurantName">
+                <Form.Label>Restaurant Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder={props.restaurantName}
+                  value={updatedRestaurantName}
+                  onChange={(e) => setUpdatedRestaurantName(e.target.value)}
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="formUpdateCuisine">
+                <Form.Label>Cuisine</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder={props.cuisine}
+                  value={updatedRestaurantCuisine}
+                  onChange={(e) => setUpdatedRestaurantCuisine(e.target.value)}
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="formUpdateImage">
+                <Form.Label>Image</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder={props.img}
+                  value={updatedRestaurantImage}
+                  onChange={(e) => setUpdatedRestaurantImage(e.target.value)}
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="formUpdateDateVisited">
+                <Form.Label>Date Visited</Form.Label>
+                <Form.Control
+                  type="date"
+                  value={updatedRestaurantDate}
+                  onChange={(e) => setUpdatedRestaurantDate(e.target.value)}
+                />
+              </Form.Group>
+            </Form>
           </form>
         </Modal.Body>
         <Modal.Footer>

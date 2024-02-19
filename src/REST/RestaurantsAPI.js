@@ -4,7 +4,7 @@ const RESTAURANTS_ENDPOINT =
 //all of my API handling is in this file which I import in any file that uses post, get, update or delete
 
 class RestaurantsAPI {
-  post = async (restaurantName, cuisine, img) => {
+  post = async (restaurantName, cuisine, img, dateVisited) => {
     try {
       const response = await fetch(`${RESTAURANTS_ENDPOINT}`, {
         method: "POST",
@@ -14,7 +14,10 @@ class RestaurantsAPI {
         body: JSON.stringify({
           restaurantName: restaurantName,
           cuisine: cuisine,
-          img: img,
+          img:
+            img ||
+            "https://static.vecteezy.com/system/resources/thumbnails/004/141/669/small/no-photo-or-blank-image-icon-loading-images-or-missing-image-mark-image-not-available-or-image-coming-soon-sign-simple-nature-silhouette-in-frame-isolated-illustration-vector.jpg",
+          dateVisited: dateVisited || null,
         }),
       });
       return await response.json();
